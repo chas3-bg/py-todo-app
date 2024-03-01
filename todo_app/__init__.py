@@ -1,3 +1,5 @@
+# style: в целия файл новите редове не са колкото трябва където трябва, препоръчвам линтер, или ако ползваш pycharm:
+# Ctrl + Alt + L за автоматично форматиране на кода
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask import request
