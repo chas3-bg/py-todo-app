@@ -26,12 +26,16 @@ app = create_app()
 
 def get_tasks():
     from .models import Task
-    tasks = []
-    for i in range(len(Task.query.order_by(Task.id).all())):
-        tasks.append(Task.query.order_by(Task.id).all()[i])
+    # tasks = []
+    # for i in range(len(Task.query.order_by(Task.id).all())):
+    #     tasks.append(Task.query.order_by(Task.id).all()[i])
+    #
+    # return tasks
 
-    return tasks
-
+    return Task.query.order_by(Task.id).all()  # експериментирай! много от популярните библиотеки са достатъчно умни,
+    # че да може да се използват по най-очевидния питонджийски начин (с минимум допълнителен код)
+    # и в двата варианта обаче този код е доста проблемен ако имаш 10 милиона задачи, гуглирай "sqlalchemy result
+    # pagination"
 
 
 @app.route('/')
