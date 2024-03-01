@@ -12,12 +12,12 @@ def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
     db.init_app(app)
-    
+
     from .models import Task
     with app.app_context():
         db.create_all()
     return app
-    
+
 
 
 
@@ -29,15 +29,15 @@ def get_tasks():
     tasks = []
     for i in range(len(Task.query.order_by(Task.id).all())):
         tasks.append(Task.query.order_by(Task.id).all()[i])
-    
+
     return tasks
 
 
 
 @app.route('/')
-def index(): 
-    task_names = [i.title for i in get_tasks()]
-    return render_template('index.html', tasks = get_tasks())
+def index():
+    task_names = [i.title for i in get_tasks()]  # безсмислен list comprehension, не правиш нищо с променливата
+    return render_template('index.html', tasks = get_tasks())  # не слагай интервали около = когато подаваш аргументи на функция
 
 
 @app.route('/add_task', methods=['POST'])
@@ -47,7 +47,7 @@ def add_task():
     # правиш така
     new_task = Task(title=request.form['newTask'])
     db.session.add(new_task)
-    db.session.commit()  
+    db.session.commit()
     return redirect(url_for('index'))
 
 @app.route('/delete_task', methods=['POST'])
