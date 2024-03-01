@@ -14,7 +14,6 @@ def create_app():
     from .models import Task
     with app.app_context():
         db.create_all()
-        #sample_task = Task(title='Sample Task', status='TODO')
     return app
     
 
@@ -34,10 +33,8 @@ def get_tasks():
 
 
 @app.route('/')
-def index():
-   
+def index(): 
     task_names = [i.title for i in get_tasks()]
-    status = [i.status for i in get_tasks()]
     return render_template('index.html', tasks = get_tasks())
 
 
@@ -61,10 +58,7 @@ def delete_task():
 def complete_task():
     from .models import Task
     task = Task.query.filter_by(title=request.form['task_name']).first()
-    if task.status == True:
-        task.status = False
-    else:
-        task.status = True
+    task.status = False if task.status == True else True
     db.session.commit()
     return redirect(url_for('index'))
 
