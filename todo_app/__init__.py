@@ -37,7 +37,7 @@ def get_tasks():
     # и в двата варианта обаче този код е доста проблемен ако имаш 10 милиона задачи, гуглирай "sqlalchemy result
     # pagination"
 
-
+# виж заб. 2
 @app.route('/')
 def index():
     task_names = [i.title for i in get_tasks()]  # безсмислен list comprehension, не правиш нищо с променливата
@@ -59,7 +59,7 @@ def add_task():
     # има :)
     db.session.commit()
     return redirect(url_for('index'))
-
+# виж заб. 2
 @app.route('/delete_task', methods=['POST'])
 def delete_task():
     from .models import Task
@@ -68,7 +68,7 @@ def delete_task():
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for('index'))
-
+# виж заб. 2
 @app.route('/complete_task', methods=['POST'])
 def complete_task():
     from .models import Task
@@ -87,3 +87,11 @@ def complete_task():
 # и със сигурност знаеш, че манипулираш правилният обект. Допълнителният бонус е, че така можеш например да провериш
 # дали този таск наистина принадлежи на този юзър и съответно дали той има право да го трие. преди наистина да го
 # изтриеш.
+
+# заб. 2: такива урл-та (по едно за всяко действие) са малко против URI спецификацията, конкретно в този аспект,
+# че едно урл трябва е йерархично, тоест колкото по-надясно отиваш, толкова по-конкретна операция върху конкретен
+# ресурс извършваш. По-добра организация би била:
+# / (index)
+# /task/add => add_task
+# /task/delete => delete_task
+# /task/complete => complete_task
