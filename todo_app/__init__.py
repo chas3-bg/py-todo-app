@@ -34,17 +34,22 @@ def get_tasks():
 
 @app.route('/')
 def index(): 
-    task_names = [i.title for i in get_tasks()]
     return render_template('index.html', tasks = get_tasks())
 
 
 @app.route('/task/add', methods=['POST'])
 def add_task():
     from .models import Task
-    new_task = Task(title=request.form['newTask'])
-    db.session.add(new_task)
-    db.session.commit()  
-    return redirect(url_for('index'))
+    try:
+        new_task = Task(title=request.form['newTask'])
+        if new_task.title.strip() == "":
+            raise Exception("Empty task name")
+        db.session.add(new_task)
+        db.session.commit()  
+        return redirect(url_for('index'))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('index'))
 
 @app.route('/task/delete', methods=['POST'])
 def delete_task():
