@@ -54,7 +54,7 @@ def add_task():
 @app.route('/task/delete', methods=['POST'])
 def delete_task():
     from .models import Task
-    task = Task.query.filter_by(title=request.form['task_name']).first()
+    task = Task.query.filter_by(id=request.form['task_id']).first()
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for('index'))
@@ -62,7 +62,7 @@ def delete_task():
 @app.route('/task/complete', methods=['POST'])
 def complete_task():
     from .models import Task
-    task = Task.query.filter_by(title=request.form['task_name']).first()
+    task = Task.query.filter_by(id=request.form['task_id']).first()
     task.status = False if task.status == True else True
     db.session.commit()
     return redirect(url_for('index'))

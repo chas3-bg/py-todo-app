@@ -58,13 +58,13 @@
                 <label for="task{{ loop.index }}">{{ task.title }}</label>
             </div>
             <form id="completeForm{{ loop.index }}" action="/task/complete" method="post">
-                <input type="hidden" name="task_name" value="{{ task.title }}">
+                <input type="hidden" name="task_id" value="{{ task.id }}">
             </form>
 
 
 
             <form action="/task/delete" method="post">
-                <input type="hidden" name="task_name" value="{{ task.title }}">
+                <input type="hidden" name="task_id" value="{{ task.id }}">
                 <button type="submit">Delete</button>
             </form>
         </div>
