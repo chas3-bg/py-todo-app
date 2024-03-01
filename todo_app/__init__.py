@@ -59,6 +59,7 @@ def add_task():
 @app.route('/delete_task', methods=['POST'])
 def delete_task():
     from .models import Task
+    # виж заб. 1
     task = Task.query.filter_by(title=request.form['task_name']).first()
     db.session.delete(task)
     db.session.commit()
@@ -67,8 +68,18 @@ def delete_task():
 @app.route('/complete_task', methods=['POST'])
 def complete_task():
     from .models import Task
+    # виж заб. 1
     task = Task.query.filter_by(title=request.form['task_name']).first()
     task.status = False if task.status == True else True
     db.session.commit()
     return redirect(url_for('index'))
 
+# заб. 1: понеже нямаш нито валидация, нито database constraint че имената на тасковете трябва да са уникални,
+# complete и delete функциите ти стават много интересни, ако има повече от 1 таск с едно и също име.
+# Пусни сървиса, отвори го в браузъра, създай няколко таска с едно и също име, и след това започни да кликаш
+# чекбоксите до тях и гледай внимателно какво и как се маркира :)
+# стандартната практика при CRUD API и/или уеб страници е ID-то на всеки обект да се слага в страницата (понякога
+# скрито), и да се подава на бекенда с всяка операция. Оттам нататък примерно изтриването ще бъде Task.query.get(id)
+# и със сигурност знаеш, че манипулираш правилният обект. Допълнителният бонус е, че така можеш например да провериш
+# дали този таск наистина принадлежи на този юзър и съответно дали той има право да го трие. преди наистина да го
+# изтриеш.
