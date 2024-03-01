@@ -57,21 +57,21 @@
                     %}checked{% endif %} onchange="completeTask({{ loop.index }})">
                 <label for="task{{ loop.index }}">{{ task.title }}</label>
             </div>
-            <form id="completeForm{{ loop.index }}" action="/complete_task" method="post">
-                <input type="hidden" name="task_name" value="{{ task.title }}">
+            <form id="completeForm{{ loop.index }}" action="/task/complete" method="post">
+                <input type="hidden" name="task_id" value="{{ task.id }}">
             </form>
 
 
 
-            <form action="/delete_task" method="post">
-                <input type="hidden" name="task_name" value="{{ task.title }}">
+            <form action="/task/delete" method="post">
+                <input type="hidden" name="task_id" value="{{ task.id }}">
                 <button type="submit">Delete</button>
             </form>
         </div>
         {% endfor %}
 
         <!-- Form for adding new tasks -->
-        <form method="post" action="/add_task">
+        <form method="post" action="/task/add">
             <label for="newTask">New Task:</label>
             <input type="text" id="newTask" name="newTask" required>
             <button type="submit">Add Task</button>
