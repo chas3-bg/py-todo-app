@@ -42,7 +42,9 @@ def index():
 
 @app.route('/add_task', methods=['POST'])
 def add_task():
-    from .models import Task
+    from .models import Task  # избягвай локални импорти освен ако не са напълно необходими. Ако импортиране в
+    # началото на файла предизвиква проблеми, примерно circular imports, тогава преструктурирай проекта вместо да го
+    # правиш така
     new_task = Task(title=request.form['newTask'])
     db.session.add(new_task)
     db.session.commit()  
