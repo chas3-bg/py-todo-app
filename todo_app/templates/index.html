@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        body {
+            background-color: #4CAF50;
+            /* Grasshopper Green */
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .todo-container {
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .todo-item {
+            margin: 5px 0;
+            /* Adjusted margin */
+            padding: 10px;
+            background-color: #388e3c;
+            /* Soli Color */
+            border-radius: 5px;
+            display: flex;
+            justify-content: flex-start;
+            /* Updated alignment */
+            align-items: center;
+        }
+
+        .todo-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+    <script>
+        function completeTask(taskIndex) {
+            document.forms['completeForm' + taskIndex].submit();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="todo-container">
+        <h1>Todo App</h1>
+
+        <!-- Todo items will be dynamically added here -->
+
+
+        {% for task in tasks %}
+        <div class="todo-item" style="display: flex; justify-content: space-between; align-items: center;">
+
+            <div>
+                <input type="checkbox" id="task{{ loop.index }}" name="task{{ loop.index }}" {% if task.status
+                    %}checked{% endif %} onchange="completeTask({{ loop.index }})">
+                <label for="task{{ loop.index }}">{{ task.title }}</label>
+            </div>
+            <form id="completeForm{{ loop.index }}" action="/complete_task" method="post">
+                <input type="hidden" name="task_name" value="{{ task.title }}">
+            </form>
+
+
+
+            <form action="/delete_task" method="post">
+                <input type="hidden" name="task_name" value="{{ task.title }}">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+
+        <!-- Form for adding new tasks -->
+        <form method="post" action="/add_task">
+            <label for="newTask">New Task:</label>
+            <input type="text" id="newTask" name="newTask" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+</body>
+
+</html>
