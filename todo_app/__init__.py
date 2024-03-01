@@ -38,7 +38,7 @@ def index():
     return render_template('index.html', tasks = get_tasks())
 
 
-@app.route('/add_task', methods=['POST'])
+@app.route('/task/add', methods=['POST'])
 def add_task():
     from .models import Task
     new_task = Task(title=request.form['newTask'])
@@ -46,7 +46,7 @@ def add_task():
     db.session.commit()  
     return redirect(url_for('index'))
 
-@app.route('/delete_task', methods=['POST'])
+@app.route('/task/delete', methods=['POST'])
 def delete_task():
     from .models import Task
     task = Task.query.filter_by(title=request.form['task_name']).first()
@@ -54,7 +54,7 @@ def delete_task():
     db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/complete_task', methods=['POST'])
+@app.route('/task/complete', methods=['POST'])
 def complete_task():
     from .models import Task
     task = Task.query.filter_by(title=request.form['task_name']).first()
