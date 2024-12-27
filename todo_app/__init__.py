@@ -20,10 +20,9 @@ def create_app():
 
 
 app = create_app()
-
+from .models import Task
 
 def get_tasks():
-    from .models import Task
     tasks = []
     for i in range(len(Task.query.order_by(Task.id).all())):
         tasks.append(Task.query.order_by(Task.id).all()[i])
@@ -39,7 +38,6 @@ def index():
 
 @app.route('/task/add', methods=['POST'])
 def add_task():
-    from .models import Task
     try:
         new_task = Task(title=request.form['newTask'])
         if new_task.title.strip() == "":
@@ -53,7 +51,6 @@ def add_task():
 
 @app.route('/task/delete', methods=['POST'])
 def delete_task():
-    from .models import Task
     task = Task.query.filter_by(id=request.form['task_id']).first()
     db.session.delete(task)
     db.session.commit()
@@ -61,9 +58,11 @@ def delete_task():
 
 @app.route('/task/complete', methods=['POST'])
 def complete_task():
-    from .models import Task
     task = Task.query.filter_by(id=request.form['task_id']).first()
     task.status = False if task.status == True else True
     db.session.commit()
     return redirect(url_for('index'))
 
+
+if __name__ == '__main__':
+    app.run(debug=True)
