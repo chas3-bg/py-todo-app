@@ -2,3 +2,5 @@
 .venv
 test
 instance
+*.tgz
+pyvenv.cfg
